@@ -1,0 +1,134 @@
+@fontsize-base: 18px;
+@fontcolour-body: #333;
+@fontcolour-hover: #08C;
+@fontcolour-headings: #2C2C2C;
+@fontcolour-subtle: #777777;
+@background-colour: #F9F9F9;
+@line-colour: #EEE;
+
+body {
+    font-family: 'Average', 'Georgia', serif;
+    font-size: @fontsize-base;
+    color: @fontcolour-body;
+    background-color: @background-colour;
+}
+body, li {
+    line-height: round(@fontsize-base * 1.2);
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+#content {
+    padding: 30px 0px 30px 0px;
+}
+
+header {
+    h1 {
+        font-size: 45px;
+        margin-bottom: 25px;
+    }
+}
+
+.brand-logo {
+    display: block;
+    float: left;
+    margin: 7px 7px 7px 0;
+}
+
+footer {
+    padding: 20px 0 20px 0;
+    border-top: 1px solid @line-colour;
+    font-size: 0.8em;
+    color: @fontcolour-subtle;
+    a {
+        &:link, &:visited, &:active { color: @fontcolour-subtle; }
+        &:hover { color: @fontcolour-hover; }
+    }
+}
+
+.alert {
+    h3 {
+        font-weight: bold;
+        margin: 0px;
+    }
+}
+
+.omp-recipe {
+    small {
+        color: @fontcolour-subtle;
+    }
+    h3 {
+        margin-top: 20px;
+        margin-bottom: 5px;
+    }
+    dl {
+        margin: 0 0 30px 0;
+    }
+    dt {
+        font-weight: normal;
+    }
+    dd {
+        color: @fontcolour-subtle;
+        font-size: round(@fontsize-base * 0.8);
+    }
+    li {
+        margin-bottom: 8px;
+
+        ul {
+            margin-top: 8px;
+        }
+    }
+    .lead {
+        margin-bottom: 0px;
+    }
+    .other-text {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .featured-image {
+        margin-bottom: 20px;
+    }
+    .top-line {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid @line-colour;
+    }
+    .no-top-margin {
+        margin-top: 0px;
+    }
+    .extra-images {
+        margin-top: 30px;
+
+        .thumbnail p {
+            margin-bottom: 0px;
+            margin-top: 5px;
+        }
+    }
+}
+
+.omp-recipe-peepbox {
+    height: 350px;
+
+    h3 {
+        line-height: 30px;
+        margin-bottom: 3px;
+        a {
+            &:link, &:visited, &:active { color: @fontcolour-headings; }
+            &:hover { color: @fontcolour-hover; }
+        }
+    }
+    p {
+        font-size: round(@fontsize-base * 0.8);
+        color: @fontcolour-subtle;
+    }
+}
+.omp-recipe-meta {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+

@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+
+# A few helpful tips about the Rules file:
+#
+# * The string given to #compile and #route are matching patterns for
+#   identifiers--not for paths. Therefore, you can’t match on extension.
+#
+# * The order of rules is important: for each item, only the first matching
+#   rule is applied.
+#
+# * Item identifiers start and end with a slash (e.g. “/about/” for the file
+#   “content/about.html”). To select all children, grandchildren, … of an
+#   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
+#   because “*” matches zero or more characters.
+
+##############################################################################
+# SITEMAP & ROBOTS
+##############################################################################
+['/sitemap/', '/robots'].each do |r|
+    compile r do
+        filter :erb
+    end
+    route r do
+        item.identifier.chop + '.' + item[:extension]
+    end
+end
+
+##############################################################################
+# STYLESHEET
+##############################################################################
+compile '/style/' do
+    filter :erb
+    filter :less
+    filter :rainpress
+end
+route '/style/' do
+    '/assets/css/style' + fingerprint(item[:filename]) + '.css'
+end
+
+##############################################################################
+# RECIPES
+##############################################################################
+# Recipe Images
+compile '/recipe/*/*/', :rep => :peepbox do
+    if item.binary?
+      filter :peepboxgen, :resize => '370x200'
+    end
+end
+compile '/recipe/*/*/', :rep => :featured do
+    if item.binary?
+      filter :thumbnailgen, :resize => '770x9999'
+    end
+end
+compile '/recipe/*/*/' do
+end
+[ :peepbox, :featured, :default ].each do |r|
+    route '/recipe/*/*/', :rep => r do
+            '/assets' + item.identifier.chop + '-' + r.to_s +
+            fingerprint(item[:filename]) + '.' + item[:extension]
+    end
+end
+
+# Recipe
+compile '/recipe/*/' do
+  filter :erb
+  layout 'recipe'
+end
+
+
+compile '*' do
+  if item.binary?
+    # don’t filter binary items
+  else
+    filter :erb
+    layout 'default'
+  end
+end
+route '/assets/*/' do
+    item.identifier.chop + fingerprint(item[:filename]) + '.' + item[:extension]
+end
+route '*' do
+  if item.binary?
+    # Write item with identifier /foo/ to /foo.ext
+    item.identifier.chop + '.' + item[:extension]
+  else
+    # Write item with identifier /foo/ to /foo/index.html
+    item.identifier + 'index.html'
+  end
+end
+
+layout '*', :erb

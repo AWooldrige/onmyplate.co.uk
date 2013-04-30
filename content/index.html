@@ -1,0 +1,23 @@
+---
+title: Home
+sitemap: True
+---
+
+<div class="row">
+    <div class="span12">
+        <ul class="thumbnails">
+            <%
+            date_sorted_recipes.each do |recipe|
+                peepbox = @items[recipe.identifier+'main/']
+            %>
+            <li class="span4 omp-recipe-peepbox">
+                <div class="thumbnail">
+                    <a href="<%= recipe.path %>" rel="bookmark"><img src="<%= peepbox.path(:rep => :peepbox) %>" class="attachment-omp-recipe-peepbox wp-post-image" alt="<%= recipe[:title] %>" /></a>
+                    <h3><a href="<%= recipe.path %>" rel="bookmark"><%= recipe[:title] %></a></h3>
+                    <p><%= recipe[:Summary] %></p>
+                </div>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+</div>

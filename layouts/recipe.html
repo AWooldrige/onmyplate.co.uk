@@ -1,0 +1,103 @@
+<%
+def build_list(instructions)
+    o = "<ul>\n"
+    instructions.each do |i|
+        if i.kind_of? String then
+            o << '    <li>' + i + "</li>\n"
+        elsif i.kind_of? Hash then
+            instruction, sub_instructions = i.first
+            o << '    <li>' + instruction.to_s + ":\n"
+            o << build_list(sub_instructions)
+            o << "</li>\n"
+        else
+            raise "Something wrong with the list"
+        end
+    end
+    o << "</ul>\n"
+    return o
+end
+%>
+
+<% render 'default' do %>
+<!-- Individual recipe -->
+<article itemscope itemtype="http://schema.org/Recipe" class="omp-recipe">
+    <div class="row">
+        <div class="span12">
+            <header><h1 itemprop="name"><%= item[:title] %></h1></header>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span8">
+            <%
+            item.children.each do |photo|
+                if photo[:filename] =~ /main.jpg$/ then
+            %>
+                <a href="<%= photo.path %>" target="_blank">
+                    <img itemprop="image" src="<%= photo.path(:rep => :featured) %>" class="img-polaroid featured-image wp-post-image" alt="<%= item[:title] %>" />
+                </a>
+            <%
+                end
+            end
+            %>
+
+            <p itemprop="description" class="lead">
+                <%= item[:Summary] %>
+            </p>
+
+            <div class="other-text">
+                <%= yield %>
+            </div>
+
+            <h3 class="no-top-margin">Method</h3>
+            <div itemprop="recipeInstructions">
+                <%= build_list item[:Method] %>
+            </div>
+
+            <% if item[:Tips] then %>
+            <h3 class="no-top-margin">Tips</h3>
+            <%= build_list item[:Tips] %>
+            <% end %>
+        </div>
+
+    <div class="span4">
+        <% firstclass = ' class="no-top-margin"' %>
+        <% item[:Ingredients].each_pair do |c_name,c_ingredients| %>
+            <h3<%= firstclass %>><%= c_name %> Ingredients</h3>
+            <dl>
+            <% c_ingredients.each do |i| %>
+                <% ingredient, quantity, instruction = i.split(", ") %>
+                <dt itemprop="ingredients"><%= ingredient %></dt>
+                <dd><%= quantity %><%= unless instruction.nil? then ", "+instruction end %></dd>
+            <% end %>
+            </dl>
+            <% firstclass = '' %>
+        <% end %>
+
+        <h3>Recipe Information</h3>
+        <ul class="omp-recipe-meta">
+            <% cook_time_iso, cook_time_human = item[:"Cook Time"].split(" - ") %>
+            <li><i class="icon-time"></i> Cook Time: <meta itemprop="cookTime" content="<%= cook_time_iso %>"><%= cook_time_human %></li>
+
+            <% prep_time_iso, prep_time_human = item[:"Prep Time"].split(" - ") %>
+            <li><i class="icon-time"></i> Prep Time: <meta itemprop="prepTime" content="<%= prep_time_iso %>"><%= prep_time_human %></li>
+
+            <li><i class="icon-user"></i> Yield: <span itemprop="recipeYield"><%= item[:Yield] %></span></li>
+        </ul>
+        <small>Recipe published on <meta itemprop="datePublished" content="<%= item[:created_at].strftime('%F') %>"><time class="entry-date" datetime="<%= item[:created_at].strftime('%FT%T%:z') %>"><%= item[:created_at].strftime('%B %-d, %Y') %></time>.</small>
+        </div>
+    </div>
+
+    <div class="row extra-images">
+        <div class="span12">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <h3 class="top-line">Comments</h3>
+            <div id="livefyre-comments"></div>
+        </div>
+    </div>
+</article>
+<% end %>
