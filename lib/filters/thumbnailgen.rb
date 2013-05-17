@@ -12,6 +12,8 @@ class Thumbnailgen < Nanoc::Filter
             '-size', params[:resize],
             '-quality', '75',
             '-resize', params[:resize],
+            '-type', 'TrueColor',
+            '-interlace', 'None',
             filename,
             output_filename)
   end
@@ -29,13 +31,13 @@ class Peepboxgen < Nanoc::Filter
             '-filter', 'triangle',
             '+profile', '"*"',
             '-size', params[:resize],
-            filename,
             '-thumbnail', params[:resize] + '^',
             '-gravity', 'Center',
             '-crop', params[:resize] + '+0+0',
             '-quality', '75',
             '-type', 'TrueColor',
-            'interlace', 'None',
+            '-interlace', 'None',
+            filename,
             output_filename)
   end
 
