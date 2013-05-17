@@ -7,9 +7,11 @@ class Thumbnailgen < Nanoc::Filter
         system(
             'gm',
             'convert',
+            '-filter', 'triangle',
+            '+profile', '*',
             '-size', params[:resize],
-            '-resize',
-            params[:resize],
+            '-quality', '75',
+            '-resize', params[:resize],
             filename,
             output_filename)
   end
@@ -24,11 +26,16 @@ class Peepboxgen < Nanoc::Filter
         system(
             'gm',
             'convert',
+            '-filter', 'triangle',
+            '+profile', '*',
             '-size', params[:resize],
-            '-resize', params[:resize] + '^',
-            '-gravity', 'center',
-            '-extent', params[:resize],
             filename,
+            '-thumbnail', params[:resize] + '^',
+            '-gravity', 'Center',
+            '-crop', params[:resize] + '+0+0',
+            '-quality', '75',
+            '-type', 'TrueColor',
+            'interlace', 'None',
             output_filename)
   end
 
