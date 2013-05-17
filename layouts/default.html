@@ -57,6 +57,13 @@
                     <li<%= ' class="active"' if item.path == @items[i].path %>><a href="<%= @items[i].path %>"><%= @items[i][:title] %></a></li>
                     <% end %>
                 </ul>
+
+                <form class="navbar-search pull-right"
+                      role="search"
+                      method="get"
+                      action="/search/">
+                    <input type="text" class="search-query" name="q" id="q" placeholder="Search">
+                </form>
             <!--/.nav-collapse -->
             </div>
         </div>
