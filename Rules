@@ -14,9 +14,11 @@
 #   because “*” matches zero or more characters.
 
 ##############################################################################
-# SITEMAP & ROBOTS
+# SITEMAP, FAVICON & ROBOTS
 ##############################################################################
-['/sitemap/', '/robots'].each do |r|
+compile '/favicon/' do
+end
+['/sitemap/', '/robots/', '/favicon/'].each do |r|
     compile r do
         filter :erb
     end
