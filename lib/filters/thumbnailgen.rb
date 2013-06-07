@@ -7,13 +7,11 @@ class Thumbnailgen < Nanoc::Filter
         system(
             'gm',
             'convert',
-            '-filter', 'triangle',
             '+profile', '"*"',
-            '-size', params[:resize],
             '-quality', '75',
-            '-resize', params[:resize],
             '-type', 'TrueColor',
             '-interlace', 'None',
+            '-thumbnail', params[:resize],
             filename,
             output_filename)
   end
