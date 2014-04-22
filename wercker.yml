@@ -5,10 +5,10 @@ build:
             packages: graphicsmagick
         - bundle-install
         - script:
-            name: nanoc compile
+            name: Compile static site using nanoc
             code: bundle exec nanoc compile
         - script:
-            name: move compiled site to expected wercker output directory
+            name: Move compiled site to expected wercker output directory
             code: mv output/* $WERCKER_OUTPUT_DIR
 deploy:
     steps:
